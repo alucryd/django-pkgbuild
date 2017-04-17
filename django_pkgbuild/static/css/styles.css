@@ -1,0 +1,149 @@
+.text-gray {
+     font: inherit;
+     font-size: 14px;
+     font-weight: bold;
+     color: #999;
+}
+
+.button-gray {
+     background: none !important;
+     border: none;
+     font: inherit;
+     font-size: 14px;
+     font-weight: bold;
+     color: #999;
+     cursor: pointer;
+}
+
+.button-gray:hover {
+     color: white;
+     text-decoration: underline;
+}
+
+.button-blue {
+     background: none !important;
+     border: none;
+     padding: 0 !important;
+     font: inherit;
+     color: #07b;
+     cursor: pointer;
+}
+
+.text-red {
+    color: red;
+}
+
+.arch-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.arch-login {
+    display: inline-flex;
+}
+
+.arch-login > input {
+    text-align: center;
+    margin-left: 4px;
+    margin-right: 4px;
+    border: 1px solid #09c;
+}
+
+.arch-login > p {
+    text-align: center;
+    margin-right: 10px;
+}
+
+.arch-repo {
+    display: flex;
+    flex-direction: column;
+}
+
+.arch-repo > h3 > input {
+    margin: 2px;
+    border: 1px solid #09c;
+}
+
+.arch-repo > select {
+    margin-left: 7px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    max-width: 200px;
+    border: 1px solid #09c;
+}
+
+.arch-repo > textarea {
+    margin: 2px;
+    margin-left: 7px;
+    border: 1px solid #09c;
+}
+
+.arch-repo > button {
+    align-self: flex-start;
+    margin: 2px;
+    padding: 2px;
+    margin-left: 7px;
+    background-color: #09c;
+    color: white;
+    font-weight: bold;
+    border: none;
+}
+
+.arch-repo > button:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.arch-repo-architectures {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 7px;
+    margin-top: 1px;
+    margin-bottom: 1px;
+}
+
+.arch-repo-architectures > input {
+    margin-left: 2px;
+    margin-right: 7px;
+}
+
+.arch-repo-multilib {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 7px;
+    margin-top: 1px;
+    margin-bottom: 1px;
+}
+
+.arch-repo-multilib > input {
+    margin-left: 2px;
+    margin-right: 7px;
+}
+
+.arch-pkglist {
+    display: flex;
+    alig-items: center;
+    margin-top: 7px;
+}
+
+.arch-pkglist > select {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    margin-right: 3px;
+    border: 1px solid #09c;
+}
+
+.arch-pkglist > button {
+    margin: 2px;
+    padding: 2px;
+    background-color: #09c;
+    color: white;
+    font-weight: bold;
+    border: none;
+}
+
+.arch-pkglist > button:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}

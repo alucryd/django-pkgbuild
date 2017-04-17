@@ -1,0 +1,39 @@
+pkgname=test-provides-package
+pkgver=1.3.2
+pkgrel=2
+epoch=
+pkgdesc='Test Provides Package'
+arch=('x86_64')
+url=""
+license=('GPL')
+groups=()
+depends=()
+makedepends=()
+checkdepends=()
+optdepends=()
+provides=('test-virtual-package')
+conflicts=()
+replaces=()
+backup=()
+options=()
+install=
+changelog=
+source=()
+noextract=()
+md5sums=()
+
+prepare() {
+    return 0
+}
+
+build() {
+    return 0
+}
+
+check() {
+    return 0
+}
+
+package() {
+    return 0
+}

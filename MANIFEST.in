@@ -1,0 +1,6 @@
+include LICENSE
+include README.md
+include django_pkgbuild/static/css/*.css
+include django_pkgbuild/templates/*.html
+include django_pkgbuild/fixtures/*.yaml
+include django_pkgbuild/tests/*.py

@@ -1,0 +1,39 @@
+pkgname=test-package
+pkgver=1.0.0
+pkgrel=1
+epoch=1
+pkgdesc='Test Package'
+arch=('i686' 'x86_64')
+url=""
+license=('GPL')
+groups=()
+depends=()
+makedepends=()
+checkdepends=()
+optdepends=()
+provides=()
+conflicts=()
+replaces=()
+backup=()
+options=()
+install=
+changelog=
+source=()
+noextract=()
+md5sums=()
+
+prepare() {
+    return 0
+}
+
+build() {
+    return 0
+}
+
+check() {
+    return 0
+}
+
+package() {
+    return 0
+}

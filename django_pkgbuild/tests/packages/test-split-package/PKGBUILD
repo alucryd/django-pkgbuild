@@ -1,0 +1,44 @@
+pkgbase=test-split-package
+pkgname=('test-first-package' 'test-second-package')
+pkgver=2.1.0
+pkgrel=2
+epoch=
+pkgdesc='Test Split Package'
+arch=('x86_64')
+url=""
+license=('GPL')
+groups=()
+depends=()
+makedepends=()
+checkdepends=()
+optdepends=()
+provides=()
+conflicts=()
+replaces=()
+backup=()
+options=()
+install=
+changelog=
+source=()
+noextract=()
+md5sums=()
+
+prepare() {
+    return 0
+}
+
+build() {
+    return 0
+}
+
+check() {
+    return 0
+}
+
+package_test-first-package() {
+    return 0
+}
+
+package_test-second-package() {
+    return 0
+}

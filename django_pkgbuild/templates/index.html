@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8"/>
+    <title>alucryd</title>
+    <link rel="stylesheet" type="text/css" href="https://www.archlinux.org/static/archweb.0cdf960f55ca.css"
+          media="screen, projection"/>
+    <link rel="stylesheet" type="text/css"
+          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    {% if static %}
+    <link rel="stylesheet" type="text/css" href="static/css/styles.css">
+    {% else %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    {% endif %}
+    <link rel="icon" type="image/x-icon" href="https://www.archlinux.org/static/favicon.29302f683ff8.ico"/>
+</head>
+<body>
+<div id="archnavbar" class="arch-navbar">
+    <div id="archnavbarlogo" class="arch-logo">
+        <p><a href="/" title="Return to the main page"></a></p>
+    </div>
+    {% if not static %}
+    <form class="arch-login" method="post">
+        {% csrf_token %}
+        {% if user.is_authenticated %}
+        <p class="text-gray">Logged in as: {{ user.username }}</p>
+        <button class="button-gray" formaction="logout/">Log out</button>
+        {% else %}
+        <input type="text" name="username" placeholder="Username" value=""/>
+        <input type="password" name="password" placeholder="Password" value=""/>
+        <button class="button-gray" formaction="login/">Log in</button>
+        {% endif %}
+    </form>
+    {% endif %}
+    <div id="archnavbarmenu">
+        <ul id="archnavbarlist" class="arch-list">
+            {% if sources_url %}
+            <li><a href="{{ sources_url }}" title="Sources">Sources</a></li>
+            {% endif %}
+            {% if bugs_url %}
+            <li><a href="{{ bugs_url }}" title="Bugs">Bugs</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+<br/>
+<div id="content">
+    <div class="box">
+        <h2>Repositories</h2>
+        {% for repository in repositories %}
+        {% if user.is_authenticated %}
+        <form method="post" class="arch-repo" action="modify_repository/">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{ repository.id }}"/>
+            <h3>[<input type="text" name="name" maxlength="32" value="{{ repository.name }}"/>]</h3>
+            <div class="arch-repo-architectures">
+                {% for architecture in architectures %}
+                {{ architecture.name }}
+                <input type="checkbox" name="architecture_{{ architecture.name }}"
+                       {% if architecture in repository.architectures.all %} checked {% endif %}
+                       {% if repository.multilib and architecture.name != 'x86_64' %} disabled {% endif %}/>
+                {% endfor %}
+            </div>
+            <div class="arch-repo-multilib">
+                multilib
+                <input type="checkbox" name="multilib" {% if repository.multilib %} checked {% endif %}>
+            </div>
+            <select name="target">
+                {% for target in targets %}
+                <option value="{{ target.0 }}" {% if repository.target == target.0 %} selected {% endif %}>{{ target.1 }}</option>
+                {% endfor %}
+            </select>
+            <textarea type="textarea" name="description" maxlength="256">{{ repository.description }}</textarea>
+            <button>Save</button>
+        </form>
+        {% else %}
+        <h3>[{{ repository.name }}]</h3>
+        <i>
+            {% for architecture in repository.architectures.all %}
+            {{ architecture.name }}
+            {% endfor %}
+            {% if repository.multilib %}
+            multilib
+            {% endif %}
+            {{ repository.target }}
+        </i>
+        <p>{{ repository.description }}</p>
+        <pre>
+[{{ repository.name }}]
+Server = {{ repository.server }}
+SigLevel = Optional</pre>
+        {% endif %}
+        {% endfor %}
+        {% if user.is_authenticated %}
+        <form method="post" class="arch-repo" action="add_repository/">
+            {% csrf_token %}
+            <h3>[<input type="text" name="name" maxlength="32" placeholder="Name" value="{{ repository.name }}"/>]</h3>
+            <div class="arch-repo-architectures">
+                {% for architecture in architectures %}
+                {{ architecture.name }}
+                <input type="checkbox" name="architecture_{{ architecture.name }}"/>
+                {% endfor %}
+            </div>
+            <div class="arch-repo-multilib">
+                multilib
+                <input type="checkbox" name="multilib">
+            </div>
+            <select name="target">
+                {% for target in targets %}
+                <option value="{{ target.0 }}">{{ target.1 }}</option>
+                {% endfor %}
+            </select>
+            <textarea type="textarea" name="description" maxlength="256" placeholder="Description">{{ repository.description }}</textarea>
+            <button>Add</button>
+        </form>
+        {% endif %}
+    </div>
+    <div id="pkglist-results" class="box">
+        <h2>Packages</h2>
+        {% for repository in repositories %}
+        <h3>[{{ repository.name }}]</h3>
+        <div class="pkglist-stats">
+            <p>{{ repository.packages.count }} packages.</p>
+        </div>
+        <table class="results sortable">
+            <thead>
+            <tr>
+                <td width="50%"><b>Name</b></td>
+                <td width="25%"><b>Version</b></td>
+                <td width="25%"><b>Last Build</b></td>
+                {% if user.is_authenticated %}
+                <td>
+                    <form method="post" action="build_all/">
+                        {% csrf_token %}
+                        <input type="hidden" name="repository_id" value="{{ repository.id }}"/>
+                        <button class="button-blue">
+                            <i class="fa fa-refresh"
+                               aria-hidden="true"></i>
+                        </button>
+                    </form>
+                </td>
+                <td></td>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for package in repository.packages.all %}
+            <tr class="{% if forloop.counter|divisibleby:2 %} even {% else %} odd {% endif %}
+                       {% if not package.base_package.builds %} text-red {% endif %}">
+                <td>{{ package.name }}</td>
+                <td>{{ package.base_package.build_history.last.version}}</td>
+                <td>{{ package.base_package.build_history.last.date }}</td>
+                {% if user.is_authenticated %}
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="package_id" value="{{ package.id }}"/>
+                    <input type="hidden" name="repository_id" value="{{ repository.id }}"/>
+                    <td>
+                        <button class="button-blue" formaction="build/"
+                                {% if package.base_package.building %} disabled="true" {% endif %}>
+                            <i class="fa fa-refresh {% if package.base_package.building %} fa-spin {% endif %}"
+                               aria-hidden="true"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <button class="button-blue" formaction="remove/"
+                                {% if package.base_package.building %} disabled="true" {% endif %}>
+                            <i class="fa fa-remove" aria-hidden="true"></i>
+                        </button>
+                    </td>
+                </form>
+                {% endif %}
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% if user.is_authenticated %}
+        <form method="post" class="arch-pkglist" action="add/">
+            {% csrf_token %}
+            <input type="hidden" name="repository_id" value="{{ repository.id }}"/>
+            <select name="package_id">
+                {% for package in repository.available_packages %}
+                <option value="{{ package.id }}">{{ package.name }}</option>
+                {% endfor %}
+            </select>
+            <button>Add</button>
+        </form>
+        {% endif %}
+        <br/>
+        {% endfor %}
+    </div>
+    <div id="footer">
+        <p>
+            Copyright © 2002-2017 <a href="mailto:jvinet@zeroflux.org" title="Contact Judd Vinet">Judd Vinet</a> and
+            <a href="mailto:aaron@archlinux.org" title="Contact Aaron Griffin">Aaron Griffin</a>.
+        </p>
+        <p>
+            The Arch Linux name and logo are recognized
+            <a href="https://wiki.archlinux.org/index.php/DeveloperWiki:TrademarkPolicy"
+               title="Arch Linux Trademark Policy">
+                trademarks
+            </a>
+            . Some rights reserved.
+        </p>
+        <p>
+            The registered trademark Linux® is used pursuant to a sublicense from LMI, the exclusive licensee of Linus
+            Torvalds, owner of the mark on a world-wide basis.
+        </p>
+    </div>
+</div>
+
+</body>
+</html>

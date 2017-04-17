@@ -1,0 +1,6 @@
+-   model: django_pkgbuild.architecture
+    pk: 1
+    fields: {name: i686}
+-   model: django_pkgbuild.architecture
+    pk: 2
+    fields: {name: x86_64}

@@ -1,0 +1,39 @@
+pkgname=test-depends-package
+pkgver=1.0.1
+pkgrel=1
+epoch=
+pkgdesc='Test Depends Package'
+arch=('i686' 'x86_64')
+url=""
+license=('GPL')
+groups=()
+depends=('test-package')
+makedepends=()
+checkdepends=()
+optdepends=()
+provides=()
+conflicts=()
+replaces=()
+backup=()
+options=()
+install=
+changelog=
+source=()
+noextract=()
+md5sums=()
+
+prepare() {
+    return 0
+}
+
+build() {
+    return 0
+}
+
+check() {
+    return 0
+}
+
+package() {
+    return 0
+}
