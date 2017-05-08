@@ -1,0 +1,3 @@
+#!/usr/bin/sh
+
+exec python @PROJECTDIR@/manage.py qcluster

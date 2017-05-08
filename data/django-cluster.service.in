@@ -1,0 +1,15 @@
+[Unit]
+Description=Django Cluster
+After=network.target
+
+[Service]
+NExecStart=@BINDIR@/django-cluster
+Type=simple
+Restart=on-failure
+RestartSec=5
+StartLimitInterval=60s
+StartLimitBurst=3
+StandardOutput=null
+
+[Install]
+WantedBy=multi-user.target
